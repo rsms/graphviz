@@ -1,7 +1,8 @@
 digraph clusters {
-  graph [bgcolor=transparent]
+  fontname="Inter"
+  bgcolor=transparent
   node [shape=rect, fontname="Inter"]
-  fontname="Inter";
+  edge [color="#00994455"]
 
   subgraph cluster_0 {
     style = filled;
