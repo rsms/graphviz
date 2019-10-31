@@ -1,0 +1,33 @@
+digraph records {
+
+fontname="Inter";
+node [fontname="Inter"];
+
+A [shape=record
+   label="UID
+   |{A-net (bit 0-15)
+    |Addr (bit 16-31)
+    |DataLen (bit 32-63)}
+   |Data"];
+
+B [shape=record
+   label="Validated UID
+   |{A-net (bit 0-15)
+    |Addr (bit 16-31)
+    |DataLen (bit 32-63)}
+   |Data
+   |Checksum"];
+
+C [shape=record
+   label="Invalid UID
+   |{A-net (bit 0-15)
+    |Addr (bit 16-31)}"];
+
+Filter [shape=diamond
+        label="Valid"]
+
+A -> Filter
+Filter -> B [label="yes",fontname="Inter"]
+Filter -> C [label="No",fontname="Inter"]
+
+}

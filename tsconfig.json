@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "forceConsistentCasingInFileNames": true,
+    "allowSyntheticDefaultImports": true,
+    "strictNullChecks": true,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "newLine": "LF",
+    "sourceMap": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "target": "es2017",
+    "lib": [
+      "esnext",
+      "webworker"
+    ],
+    "baseUrl": "src",
+    "outDir": "docs"
+  }
+}

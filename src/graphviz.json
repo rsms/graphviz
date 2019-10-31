@@ -1,0 +1,5 @@
+{
+  "api": "1.0.0",
+  "name": "graphviz",
+  "main": "graphviz.ts"
+}

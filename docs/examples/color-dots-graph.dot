@@ -1,0 +1,66 @@
+# Example of an undirected graph
+graph colors {
+  # Attributes in here apply to the graph itself.
+  pad="1"
+  outputorder=edgesfirst
+  bgcolor=transparent
+
+  # layout= specifies a layout engine:
+  #   circo — for circular layout of graphs
+  #   dot — for drawing directed graphs (the default)
+  #   fdp — for drawing undirected graphs
+  #   neato — for drawing undirected graphs
+  #   osage — for drawing large undirected graphs
+  #   twopi — for radial layouts of graphs
+  layout=fdp
+  #layout=neato
+  #layout=twopi
+  #layout=circo
+
+  # Default node attributes
+  node [
+    shape = circle
+    style="filled,bold"
+    color=black
+    fontname=Inter
+  ]
+
+  # Uncomment this to hide labels
+  #node [ label="" ]
+
+  # Uncomment this to arrange nodes in a grid
+  #layout=osage outputorder=edgesfirst edge [style=invis]
+
+  # Edges
+  A -- C
+  B -- { C, D, F }
+  C -- H
+  D -- { F, G }
+  E -- { F, G, J }
+  F -- I
+  G -- L
+  H -- K
+  I -- K
+  J -- M
+  K -- N
+  L -- N
+  M -- N
+  N -- O
+
+  # Node attributes
+  A [ fillcolor = "#ECD1C9" ]
+  B [ fillcolor = "#FBB5AE" ]
+  C [ fillcolor = "#FFEFBC" ]
+  D [ fillcolor = "#B7D1DF" ]
+  E [ fillcolor = "#D1E2CE" ]
+  F [ fillcolor = "#FADAE5" ]
+  G [ fillcolor = "#ECE3D5" ]
+  H [ fillcolor = "#F2F2F2" ]
+  I [ fillcolor = "#ECE3C1" ]
+  J [ fillcolor = "#BEDFC8" ]
+  K [ fillcolor = "#F9F2B6" ]
+  L [ fillcolor = "#EFD0BD" ]
+  M [ fillcolor = "#DDD0E5" ]
+  N [ fillcolor = "#F2E4C8" ]
+  O [ fillcolor = "#CBCBCB" ]
+}

@@ -1,0 +1,46 @@
+<head>
+  <meta charset="utf-8">
+  <title>Graphviz</title>
+  <link rel="stylesheet" type="text/css" href="index.css">
+  <script src="graphviz.js"></script>
+</head>
+<body>
+
+<div id="update-dot"></div>
+
+<div id="editor">
+  <div class="scroll-view">
+    <div class="code">
+      <div class="line-numbers">1
+2
+3
+4
+5
+6
+7
+8
+9</div>
+    <textarea autocomplete="on"
+              autocorrect="off"
+              spellcheck="false"
+              autocapitalize="none"
+              wrap="off"
+              autofocus
+></textarea>
+    </div>
+  </div>
+  <div class="toolbar">
+    <label><input name="liveUpdate" type="checkbox" checked> Live</label>
+    <button name="copy" title="Copy output to clipboard">Copy SVG</button>
+    <button name="next-example" title="Load another example">Next example</button>
+    <button name="generate" title="Ctrl+Enter  or  Ctrl+S">Generate</button>
+  </div>
+</div>
+
+<div id="presentation">
+  <div class="error"></div>
+  <div class="graph"></div>
+</div>
+
+<script src="app.js" async></script>
+</body>
