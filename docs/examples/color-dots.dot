@@ -30,7 +30,7 @@ digraph colors {
   #node [ label="" ]
 
   # Uncomment this to arrange nodes in a grid
-  #layout=osage outputorder=edgesfirst edge [style=invis]
+  #layout=osage  edge [style=invis]
 
   # Edges
   A -> C
