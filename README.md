@@ -40,7 +40,7 @@ namespace graphviz {
   // Error raised on timeout
   export const TimeoutError :Error
 
-  // layout perform graphviz layout in a asynchronous fashion
+  // layout performs Graphviz layout
   export function layout(
     source   :string,  // dot source code
     format?  :Format,  // Output format. Defaults to "svg"
