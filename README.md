@@ -1,7 +1,5 @@
 # Graphviz in the browser
 
-Served at <https://rsms.me/graphviz/>
-
 Use in your own things:
 
 ```html
@@ -25,3 +23,5 @@ digraph {
 ```
 
 This is essentially a wrapper around [viz.js](https://github.com/mdaines/viz.js).
+
+See [Graphviz documentation here](https://www.graphviz.org/doc/info/attrs.html)
