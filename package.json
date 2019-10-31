@@ -1,12 +1,14 @@
 {
-  "name": "graphviz-webworker",
+  "name": "@rsms/graphviz",
   "version": "1.0.1",
-  "description": "",
-  "main": "index.js",
+  "description": "Graphviz web app",
+  "main": "docs/graphviz.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "./build.sh -O",
+    "build-g": "./build.sh",
+    "dev": "./dev.sh"
   },
-  "author": "",
+  "author": "rsms",
   "license": "MIT",
   "devDependencies": {
     "figplug": "0.1.12",
