@@ -2,6 +2,7 @@ digraph finite_state_machine {
   rankdir=LR
   bgcolor=transparent
   node [fontname=Inter]
+  edge [fontname=Inter]
   node [shape = doublecircle] LR_0 LR_3 LR_4 LR_8
   node [shape = square] LR_6
   node [shape = circle]
