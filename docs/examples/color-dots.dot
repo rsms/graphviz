@@ -23,6 +23,7 @@ digraph colors {
     shape = circle
     style="filled,bold"
     color=black
+    fillcolor="#F2F2F2"
     fontname=Inter
   ]
 
