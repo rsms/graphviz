@@ -56,7 +56,11 @@ VERSION=$(node -e 'process.stdout.write(require("./package.json").version)')
 # figplug=~/src/figplug/bin/figplug.g
 figplug=./node_modules/.bin/figplug
 
-sed -e 's/let VERSION = "[^"]"/let VERSION = "'"$VERSION"'"/g' docs/app.js > docs/.app.js
+# update version
+sed -E 's/let VERSION = "[^"]+"/let VERSION = "'"$VERSION"'"/g' docs/app.js > docs/.app.js
 mv -f docs/.app.js docs/app.js
+
+sed -E 's/src="graphviz.js[^"]+"/src="graphviz.js?v='"$VERSION"'"/g' docs/index.html > docs/.index.html
+mv -f docs/.index.html docs/index.html
 
 $figplug build "${FIGPLUG_ARGS[@]}" src/graphviz.json:docs
