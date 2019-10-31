@@ -1,6 +1,14 @@
 # Graphviz in the browser
 
-Use in your own things:
+Provides a very small JS library
+
+- Exposes a global variable `graphvis`
+- Very fast
+- Runs graphviz compiled as WebAssembly in a background Worker thread
+- Timeouts for preventing run-away "huge graph" computations
+
+
+## Usage
 
 ```html
 <head>
@@ -21,6 +29,48 @@ digraph {
 </script>
 </body>
 ```
+
+## API
+
+```ts
+namespace graphviz {
+  // Version string of this library (e.g. "1.2.3")
+  export const version :string
+
+  // Error raised on timeout
+  export const TimeoutError :Error
+
+  // layout perform graphviz layout in a asynchronous fashion
+  export function layout(
+    source   :string,  // dot source code
+    format?  :Format,  // Output format. Defaults to "svg"
+    engine?  :Engine,  // Default engine type. Defaults to "dot"
+    timeout? :number,  // Optional timeout in milliseconds
+  ) :Promise<string>
+
+  // Output formats
+  export type Format = "dot"
+                     | "json"
+                     | "json0"
+                     | "plain"
+                     | "plain-ext"
+                     | "ps"
+                     | "ps2"
+                     | "svg"
+                     | "xdot"
+
+  // Layout engine types
+  export type Engine = "circo"  // for circular layout of graphs
+                     | "dot"    // for drawing directed graphs
+                     | "fdp"    // for drawing undirected graphs
+                     | "neato"  // for drawing undirected graphs
+                     | "osage"  // for drawing large undirected graphs
+                     | "twopi"  // for radial layouts of graphs
+}
+```
+
+
+## Notes
 
 This is essentially a wrapper around [viz.js](https://github.com/mdaines/viz.js).
 
