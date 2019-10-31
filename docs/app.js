@@ -29,7 +29,15 @@ let examples = [
 let regenWhenDone = false
 let isGenerating = false
 
+// this helps work around a difference in behavior between Firefox and other web browsers,
+// where setting textArea.value="bla" causes change events in Safari and Chrome, but not in FF.
+let isSwappingOutEditorValue = false
+
 function generateGraph() {
+  let e = new Error()
+  if (isSwappingOutEditorValue) {
+    return
+  }
   // bounce to prevent flooding worker with messages
   if (isGenerating) {
     regenWhenDone = true
@@ -96,7 +104,16 @@ function loadNextExample() {
   fetch(url).then(r => r.text()).then(text => {
     // bug workaround: adding an extra space and removing it with execCommand
     // causes the flexbox layout to be correctly updated.
+
+    isSwappingOutEditorValue = true
     textArea.value = text + " "
+    setTimeout(() => {
+      // workaround for Firefox
+      isSwappingOutEditorValue = false
+      generateGraph()
+      updateLineNumbers()
+    },0)
+
     textArea.focus()
     setTimeout(() => {
       try {
