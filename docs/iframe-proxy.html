@@ -1,0 +1,34 @@
+<head>
+  <meta charset="utf-8">
+  <title>Graphviz iframe proxy</title>
+  <script src="graphviz.js?v=1.0.2"></script>
+  <script>
+var handlers = {
+  layout: function(msg) {
+    function reply(error, result) {
+      parent.postMessage({
+        type: "graphviz.proxy.response",
+        trid: msg.trid,
+        error: error && String(error),
+        result: result,
+      }, '*')
+    }
+    graphviz.layout.apply(graphviz, msg.args)
+      .then(function(result){ reply(null, result) })
+      .catch(reply)
+  }
+}
+window.onmessage = function(ev) {
+  if (ev.data && ev.data.type) {
+    let h = handlers[ev.data.type]
+    if (h) {
+      ev.stopPropagation()
+      h(ev.data)
+    }
+  }
+}
+parent.postMessage({ type: "graphviz.proxy.ready" }, '*')
+  </script>
+</head>
+<body>
+</body>

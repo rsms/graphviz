@@ -21,7 +21,7 @@ export default class Viz {
   readonly wrapper :{
     readonly worker :Worker
   }
-  constructor(options :{ workerURL :string})
+  constructor(options? :{ workerURL :string})
   renderString(source :string, options? :RenderOptions) :Promise<string>
 }
 
