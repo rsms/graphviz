@@ -1,4 +1,4 @@
-let VERSION = "1.0.6"
+let VERSION = "1.0.7"
 
 let iOS = navigator.userAgent.indexOf("iPhone") != -1
 
@@ -25,6 +25,7 @@ let examples = [
   "projects.dot",
   "records.dot",
   "kuratowski.dot",
+  "switch.dot",
   "unix.dot",
   "network.dot",
 ]
@@ -62,17 +63,48 @@ function generateGraph() {
   let source = textArea.value.trim()
   source = source.replace(/fontname\s*=\s*(?:"Inter"|'Inter'|Inter)/g, 'fontname="Courier,Inter"')
 
-  graphviz.layout(source, "svg", "dot").then(svg => {
-    // let dataUrl = "data:image/svg+xml;base64," + btoa(svg)
-    // presentation.querySelector(".graph").style.backgroundImage = `url(${dataUrl})`
-    presentation.querySelector(".graph").innerHTML = svg
-    lastValidOutput = svg
-    onEnd()
-  }).catch(err => {
-    presentation.querySelector(".error").innerText = String(err)
-    presentation.classList.add("error")
-    onEnd()
-  })
+  let addedGraphDirective = false
+  if (!source.match(/\b(?:di)?graph(?:\s+[^\{\r\n]+|)[\r\n\s]*\{/m)) {
+    // definitely no graph type directive
+    source = wrapInGraphDirective(source)
+    addedGraphDirective = true
+  }
+
+  function render() {
+    return graphviz.layout(source, "svg", "dot").then(svg => {
+      // let dataUrl = "data:image/svg+xml;base64," + btoa(svg)
+      // presentation.querySelector(".graph").style.backgroundImage = `url(${dataUrl})`
+      presentation.querySelector(".graph").innerHTML = svg
+      lastValidOutput = svg
+      onEnd()
+    }).catch(err => {
+      if (!addedGraphDirective &&
+          err.message &&
+          (err.message+"").toLowerCase().indexOf("syntax error") != -1
+      ) {
+        // try and see if adding graph directive fixes it
+        source = wrapInGraphDirective(source)
+        addedGraphDirective = true
+        return render()
+      }
+      presentation.querySelector(".error").innerText = String(err)
+      presentation.classList.add("error")
+      onEnd()
+    })
+  }
+  render()
+}
+
+
+function wrapInGraphDirective(s) {
+  return (
+    'digraph {\n' +
+    '  graph [fontname="Courier,Inter" bgcolor=transparent];\n' +
+    '  node  [fontname="Courier,Inter"];\n' +
+    '  edge  [fontname="Courier,Inter"];\n' +
+    s +
+    '\n}\n'
+  )
 }
 
 
@@ -111,29 +143,32 @@ function loadNextExample() {
   presentation.querySelector(".graph").innerText = ""
   currentExample = ++currentExample % examples.length
   let url = "examples/" + examples[currentExample] + "?v=" + VERSION
-  fetch(url).then(r => r.text()).then(text => {
-    // bug workaround: adding an extra space and removing it with execCommand
-    // causes the flexbox layout to be correctly updated.
-
-    isSwappingOutEditorValue = true
-    textArea.value = text + " "
-    document.execCommand("delete")
-
-    setTimeout(() => {
-      // workaround for Firefox
-      isSwappingOutEditorValue = false
-      generateGraph()
-      updateLineNumbers()
-    },0)
-
-    focusEditor()
-    setTimeout(() => {
-      try {
-        textArea.selectionStart = textArea.selectionEnd = 0
-      } catch(_) {}
-    },1)
-  })
+  fetch(url).then(r => r.text()).then(setSource)
 }
+
+
+function setSource(source) {
+  // bug workaround: adding an extra space and removing it with execCommand
+  // causes the flexbox layout to be correctly updated.
+  isSwappingOutEditorValue = true
+  textArea.value = source + " "
+  document.execCommand("delete")
+
+  setTimeout(() => {
+    // workaround for Firefox
+    isSwappingOutEditorValue = false
+    generateGraph()
+    updateLineNumbers()
+  },0)
+
+  focusEditor()
+  setTimeout(() => {
+    try {
+      textArea.selectionStart = textArea.selectionEnd = 0
+    } catch(_) {}
+  },1)
+}
+
 
 function updateGenButtonAvailability() {
   genButton.disabled = liveUpdate.checked
@@ -329,8 +364,24 @@ function updateWindowSize() {
 window.addEventListener("resize", updateWindowSize, {passive:true})
 
 
+let qs = {}
+location.search && location.search.substr(1).split("&").map(function (p) {
+  let kv = p.split("=")
+  let k = decodeURIComponent(kv[0])
+  let v = kv.length == 1 ? "1" : decodeURIComponent(kv[1])
+  qs[k] = v
+})
+
+
+let userSource = qs["source"] || ""
+
+
 updateWindowSize()
-loadNextExample()
+if (userSource) {
+  setSource(userSource)
+} else {
+  loadNextExample()
+}
 updateGenButtonAvailability()
 updateLineNumbers()
 focusEditor()

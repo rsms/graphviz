@@ -1,7 +1,3 @@
-digraph records {
-
-fontname="Inter";
-node [fontname="Inter"];
 
 A [shape=record
    label="UID
@@ -27,7 +23,5 @@ Filter [shape=diamond
         label="Valid"]
 
 A -> Filter
-Filter -> B [label="yes",fontname="Inter"]
-Filter -> C [label="No",fontname="Inter"]
-
-}
+Filter -> B [label="yes"]
+Filter -> C [label="No"]
