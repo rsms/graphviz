@@ -1,4 +1,4 @@
-let VERSION = "1.0.5"
+let VERSION = "1.0.6"
 
 let iOS = navigator.userAgent.indexOf("iPhone") != -1
 
@@ -24,6 +24,7 @@ let examples = [
   "prof.dot",
   "projects.dot",
   "records.dot",
+  "kuratowski.dot",
   "unix.dot",
   "network.dot",
 ]

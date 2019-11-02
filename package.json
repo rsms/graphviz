@@ -1,6 +1,6 @@
 {
   "name": "@rsms/graphviz",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "Graphviz web app",
   "main": "docs/graphviz.js",
   "scripts": {
