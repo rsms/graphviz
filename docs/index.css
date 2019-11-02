@@ -36,6 +36,7 @@ a, a:active, a:visited { color: inherit; }
   --editorFontFamily: 'iaw-quattro';
   --editorWidth: 420px;
   --toolbarHeight: 40px;
+  --buttonHeight: 24px;
 }
 @supports (font-variation-settings: normal) { :root {
   --fontFamily: "Inter var";
@@ -125,7 +126,7 @@ body {
   font-weight: 450;
   line-height: 1;
   box-sizing: border-box;
-  height: 24px;
+  height: var(--buttonHeight);
   padding: 0 8px;
   margin:0;
   border: 1px solid #eee;
@@ -147,6 +148,22 @@ body {
 #editor .toolbar button[name="copy"] {
   width:73px; /* fixed size because we swap out label temporarily */
   padding:0;
+}
+#editor .toolbar .source {
+  flex: 1 1 auto;
+  display: flex;
+  justify-content: flex-end;
+}
+#editor .toolbar .source a {
+  display: block;
+  height: var(--buttonHeight);
+  line-height: var(--buttonHeight);
+  padding: 0 8px;
+  text-decoration: none;
+  border-radius: 5px;
+}
+#editor .toolbar .source a:hover {
+  background: black;
 }
 
 
