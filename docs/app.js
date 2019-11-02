@@ -1,4 +1,6 @@
-let VERSION = "1.0.4"
+let VERSION = "1.0.5"
+
+let iOS = navigator.userAgent.indexOf("iPhone") != -1
 
 let editor        = document.querySelector("#editor")
 let textArea      = editor.querySelector("textarea")
@@ -95,6 +97,13 @@ function updateLineNumbers() {
 }
 
 
+function focusEditor() {
+  if (!iOS) {
+    textArea.focus()
+  }
+}
+
+
 let currentExample = -1
 
 function loadNextExample() {
@@ -107,6 +116,8 @@ function loadNextExample() {
 
     isSwappingOutEditorValue = true
     textArea.value = text + " "
+    document.execCommand("delete")
+
     setTimeout(() => {
       // workaround for Firefox
       isSwappingOutEditorValue = false
@@ -114,13 +125,12 @@ function loadNextExample() {
       updateLineNumbers()
     },0)
 
-    textArea.focus()
+    focusEditor()
     setTimeout(() => {
       try {
         textArea.selectionStart = textArea.selectionEnd = 0
       } catch(_) {}
     },1)
-    document.execCommand("delete")
   })
 }
 
@@ -159,7 +169,7 @@ function copyOutputToClipboard() {
 // event handlers
 
 editor.onclick = ev => {
-  ev.target !== textArea && textArea.focus()
+  ev.target !== textArea && focusEditor()
 }
 
 textArea.oninput = () => {
@@ -296,7 +306,30 @@ if (navigator.platform.indexOf("Mac") != -1) {
   genButton.title = "⌘↩  or  ⌘S"
 }
 
+
+let initialWindowWidthRatio = window.outerWidth - window.innerWidth
+let initialWindowHeightRatio = window.outerHeight - window.innerHeight
+let updateWindowSizeTimer = null
+
+function updateWindowSize() {
+  clearTimeout(updateWindowSizeTimer)
+  let wrd = Math.abs(initialWindowWidthRatio - (window.outerWidth - window.innerWidth))
+  let hrd = Math.abs(initialWindowHeightRatio - (window.outerHeight - window.innerHeight))
+  if (wrd > 1 || hrd > 1) {
+    // probably a zoom thing going on. Check again in a moment since resize events
+    // are throttled and often the "last" one is not delivered in Safari.
+    updateWindowSizeTimer = setTimeout(updateWindowSize)
+    return
+  }
+  let s = document.documentElement.style
+  s.setProperty("--winWidth", window.innerWidth + "px")
+  s.setProperty("--winHeight", window.innerHeight + "px")
+}
+window.addEventListener("resize", updateWindowSize, {passive:true})
+
+
+updateWindowSize()
 loadNextExample()
 updateGenButtonAvailability()
 updateLineNumbers()
-textArea.focus()
+focusEditor()

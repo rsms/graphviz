@@ -56,12 +56,13 @@ body {
   /*border-right: 1px solid #ccc;*/
   width: var(--editorWidth);
   flex: 1 1 auto;
-  position: absolute;
+  position: fixed;
   left:0; top:0; bottom:0;
 }
 
 #editor .scroll-view {
   flex: 1 1 auto;
+  -webkit-overflow-scrolling: touch;
   overflow: auto;
   overflow-x: hidden;
   overflow-y: auto;
@@ -169,7 +170,7 @@ body {
 
 
 #presentation {
-  position: absolute;
+  position: fixed;
   left: var(--editorWidth); top:0; bottom:0; right:0;
   /*background: white;*/
   display: flex;
@@ -188,7 +189,7 @@ body {
   padding: 32px;
   position: absolute;
   left:0; top:0; right:0; bottom:0;
-  overflow: auto;
+  overflow: hidden;
   align-items: center;
   justify-content: center;
 }
@@ -269,12 +270,11 @@ svg *[font-family="Courier,Inter"] {
   }
   #editor {
     top: initial;
-    height: 50vh;
+    height: calc(var(--winHeight) * 0.5);
     box-shadow: 0 -1px 0 0 rgba(0,0,0,0.1);
   }
   #presentation {
-    position: absolute;
     left: 0; top: 0; right:0; bottom: initial;
-    height: 50vh;
+    height: calc(var(--winHeight) * 0.5);
   }
 }

@@ -60,10 +60,21 @@ figplug=./node_modules/.bin/figplug
 sed -E 's/let VERSION = "[^"]+"/let VERSION = "'"$VERSION"'"/g' docs/app.js > docs/.app.js
 mv -f docs/.app.js docs/app.js
 
-sed -E 's/src="graphviz\.js\?v=[^"\&]+/src="graphviz.js?v='"$VERSION"'/g' docs/index.html > docs/.index.html
+sed -E 's/\?v=[^"]+/?v='"$VERSION"'/g' docs/index.html > docs/.index.html
 mv -f docs/.index.html docs/index.html
 
-sed -E 's/href="index\.css\?v=[^"\&]+/href="index.css?v='"$VERSION"'/g' docs/index.html > docs/.index.html
-mv -f docs/.index.html docs/index.html
+# optimize images
+pushd docs >/dev/null
+for f in *.svg; do
+  svgo --multipass -q "$f" &
+done
+for f in *.png; do
+  TMPNAME=.$f.tmp
+  (pngcrush -q "$f" "$TMPNAME" && mv -f "$TMPNAME" "$f") &
+done
+popd >/dev/null
 
+# build
 $figplug build "${FIGPLUG_ARGS[@]}" src/graphviz.json:docs
+
+wait
