@@ -30,7 +30,7 @@ a, a:active, a:visited { color: inherit; }
 
 :root {
   --blue: #0088ff;
-  --fontSize: 12px;
+  --fontSize: 11px;
   --editorFontSize: var(--fontSize);
   --fontFamily: Inter;
   --editorFontFamily: 'iaw-quattro';
@@ -112,32 +112,34 @@ body {
 #editor .toolbar {
   flex: 0 0 auto;
   height: var(--toolbarHeight);
-  /*border-top: 1px solid #ccc;*/
-  background: #333;
-  color: #eee;
+  box-shadow: 0 -1px 0 0 rgba(0,0,0,0.1);
   padding: 0 8px;
   display: flex;
   align-items: center;
-  /*justify-content: center;*/
+  z-index: 1;
 }
 
 #editor .toolbar button {
-  font-family: inherit;
+  font: inherit;
   font-weight: 450;
   line-height: 1;
   box-sizing: border-box;
   height: var(--buttonHeight);
   padding: 0 8px;
   margin:0;
-  border: 1px solid #eee;
-  color: #fff;
+  /*border: 1px solid #ccc;*/
+  border: none;
+  background: none;
+  background: rgba(0,0,0,0.1);
   letter-spacing:0.02em;
   border-radius: 5px;
-  background: none;
   margin-left: 8px;
 }
+#editor .toolbar button:hover {
+  background: rgba(0,0,0,0.2);
+}
 #editor .toolbar button:active {
-  background: rgba(255,255,255,0.1);
+  background: rgba(0,0,200,0.5);
 }
 #editor .toolbar button.disabled {
   display: none;
@@ -160,16 +162,15 @@ body {
   line-height: var(--buttonHeight);
   padding: 0 8px;
   text-decoration: none;
-  border-radius: 5px;
 }
 #editor .toolbar .source a:hover {
-  background: black;
+  text-decoration: underline;
 }
 
 
 #presentation {
   position: absolute;
-  left: calc(var(--editorWidth) - 1px); top:0; bottom:0; right:0;
+  left: var(--editorWidth); top:0; bottom:0; right:0;
   /*background: white;*/
   display: flex;
   justify-content: center;
@@ -251,4 +252,29 @@ svg *[font-family="Courier,Inter"] {
 #update-dot.visible {
   opacity: 1;
   transition: opacity 0ms ease-out;
+}
+
+
+@media only screen and (max-width: 800px) {
+  :root {
+    --editorWidth: 50vw;
+  }
+}
+
+
+/* for window width <= 600 */
+@media only screen and (max-width: 600px) {
+  :root {
+    --editorWidth: 100vw;
+  }
+  #editor {
+    top: initial;
+    height: 50vh;
+    box-shadow: 0 -1px 0 0 rgba(0,0,0,0.1);
+  }
+  #presentation {
+    position: absolute;
+    left: 0; top: 0; right:0; bottom: initial;
+    height: 50vh;
+  }
 }
