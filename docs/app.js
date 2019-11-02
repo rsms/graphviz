@@ -1,4 +1,4 @@
-let VERSION = "1.0.3"
+let VERSION = "1.0.4"
 
 let editor        = document.querySelector("#editor")
 let textArea      = editor.querySelector("textarea")
