@@ -49,7 +49,14 @@ function generateGraph() {
   }
   isGenerating = true
   showUpdateDot()
+  let clearGraphTimer = setTimeout(() => {
+    presentation.querySelector(".graph").innerText = ""
+  }, 200)
+
+  const timeout = 30000
+
   function onEnd() {
+    clearTimeout(clearGraphTimer)
     hideUpdateDot()
     isGenerating = false
     if (regenWhenDone) {
@@ -71,13 +78,14 @@ function generateGraph() {
   }
 
   function render() {
-    return graphviz.layout(source, "svg", "dot").then(svg => {
+    return graphviz.layout(source, "svg", "dot", timeout).then(svg => {
       // let dataUrl = "data:image/svg+xml;base64," + btoa(svg)
       // presentation.querySelector(".graph").style.backgroundImage = `url(${dataUrl})`
       presentation.querySelector(".graph").innerHTML = svg
       lastValidOutput = svg
       onEnd()
     }).catch(err => {
+      //console.log("render() ERROR", err.stack||String(err)) // XXX DEBUG
       if (!addedGraphDirective &&
           err.message &&
           (err.message+"").toLowerCase().indexOf("syntax error") != -1
@@ -87,6 +95,7 @@ function generateGraph() {
         addedGraphDirective = true
         return render()
       }
+      console.error(err.stack||String(err))
       presentation.querySelector(".error").innerText = String(err)
       presentation.classList.add("error")
       onEnd()
